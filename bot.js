@@ -34,4 +34,12 @@ bot.onText(/^/, function (msg) {
   });
 });
 
+function doSendMessage(){
+    bot.sendMessage(msg.chat.id, 'doSendMessage ----').then(function (res) {
+
+    });
+}
+
+setTimeout(doSendMessage, 1000);
+
 module.exports = bot;
