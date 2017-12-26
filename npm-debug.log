@@ -7,7 +7,7 @@
 6 silly lifecycle heroku-node-telegram-bot@1.0.0~prestart: no script for prestart, continuing
 7 info lifecycle heroku-node-telegram-bot@1.0.0~start: heroku-node-telegram-bot@1.0.0
 8 verbose lifecycle heroku-node-telegram-bot@1.0.0~start: unsafe-perm in lifecycle true
-9 verbose lifecycle heroku-node-telegram-bot@1.0.0~start: PATH: /usr/local/lib/node_modules/npm/bin/node-gyp-bin:/Users/macos/Workspace/heroku-node-telegram-bot/node_modules/.bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/Wireshark.app/Contents/MacOS
+9 verbose lifecycle heroku-node-telegram-bot@1.0.0~start: PATH: /usr/local/lib/node_modules/npm/bin/node-gyp-bin:/Users/macos/Workspace/heroku-node-telegram-bot/node_modules/.bin:/Users/macos/.rbenv/shims:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Applications/Wireshark.app/Contents/MacOS
 10 verbose lifecycle heroku-node-telegram-bot@1.0.0~start: CWD: /Users/macos/Workspace/heroku-node-telegram-bot
 11 silly lifecycle heroku-node-telegram-bot@1.0.0~start: Args: [ '-c', 'export $(cat .env | xargs) && node index.js' ]
 12 silly lifecycle heroku-node-telegram-bot@1.0.0~start: Returned: code: 1  signal: null
@@ -24,7 +24,7 @@
 14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:226:5)
 15 verbose pkgid heroku-node-telegram-bot@1.0.0
 16 verbose cwd /Users/macos/Workspace/heroku-node-telegram-bot
-17 error Darwin 16.6.0
+17 error Darwin 17.3.0
 18 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "start"
 19 error node v6.9.1
 20 error npm  v3.10.8
