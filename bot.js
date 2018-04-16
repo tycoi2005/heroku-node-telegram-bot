@@ -2,7 +2,7 @@ var token = process.env.TOKEN;
 var Bot = require('node-telegram-bot-api');
 var bot;
 
-const toanhd = 307822770;
+const receiver = process.env.RECEIVER;
 
 if(process.env.NODE_ENV === 'production') {
   console.log("production")
@@ -17,6 +17,7 @@ else {
 console.log('Bot server started in the ' + process.env.NODE_ENV + ' mode');
 
 bot.onText(/^/, function (msg) {
+    console.log("msg.chat.id",msg.chat.id);
   var name = msg.from.first_name;
   bot.sendMessage(msg.chat.id, 'Hello, ' + name + '! I am pleased to serve you!').then(function (res) {
       // { message_id: 12,
@@ -34,15 +35,14 @@ bot.onText(/^/, function (msg) {
       //         text: 'Hello, toan!' }
     // console.log("res",res)
     // reply sent!
+
+      //group -225354542
   });
 });
 
 
-
-
-
 bot.sendHTML = function(htmlString){
-    return bot.sendMessage( toanhd , htmlString, {parse_mode:'HTML'})
+    return bot.sendMessage( receiver , htmlString, {parse_mode:'HTML'})
 }
 
 
