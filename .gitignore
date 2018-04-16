@@ -2,4 +2,5 @@ yarn.lock
 .idea
 .env
 node_modules
-.idea/misc.xml .idea/modules.xml .idea/vcs.xml .idea/workspace.xml
+.idea/*
+npm-debug.log

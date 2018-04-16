@@ -1,10 +1,4 @@
 var token = process.env.TOKEN;
-const binance = require('node-binance-api');
-binance.options({
-    'APIKEY':process.env.BINANCE_KEY,
-    'APISECRET':process.env.BINANCE_SECRET
-});
-
 var Bot = require('node-telegram-bot-api');
 var bot;
 
@@ -43,49 +37,17 @@ bot.onText(/^/, function (msg) {
   });
 });
 
-var lastAsset = ""
-var assets = []
-var mapAssets = {}
 
-function doSendMessage(){
-    binance.account(function(response) {
-        let balance = response.balances[response.balances.length -1];
-        if (lastAsset != balance.asset){
-            lastAsset = balance.asset;
-            bot.sendMessage( toanhd , 'last Asset ----' + lastAsset).then(function (res) {
-                console.log("sended last asset", lastAsset)
-            });
-        }
-        console.log("check new assests --------")
-        let newbalances = response.balances;
-        if (assets.length == 0){
-            assets = newbalances;
-            for (var i=0; i<response.balances.length; i++){
-                let b = response.balances[i];
-                mapAssets[b.asset] = b;
-            }
-            // for test
-            // mapAssets['WINGS'] = null;
-            // assets.pop()
-        } else if (assets.length < newbalances.length ){
-            for (var i=0; i<response.balances.length; i++){
-                let b = response.balances[i];
-                if (!mapAssets[b.asset]){
-                    mapAssets[b.asset] = b;
-                    bot.sendMessage( toanhd , 'new Asset ----' + b.asset).then(function (res) {
-                        console.log("sended new asset", b.asset)
-                    });
-                } else {
-                    console.log(mapAssets[b.asset])
-                }
-            }
-            assets = newbalances;
-        }
-    });
 
-    setTimeout(doSendMessage, 10000);
+
+
+bot.sendHTML = function(htmlString){
+    return bot.sendMessage( toanhd , htmlString, {parse_mode:'HTML'})
 }
 
-doSendMessage()
+
+
+var binance = require('./binance/binance.js')(bot);
+binance.start();
 
 module.exports = bot;
