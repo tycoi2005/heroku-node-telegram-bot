@@ -4,6 +4,7 @@
 
 const binanceapi = require('node-binance-api');
 var schedule = require('node-schedule');
+var Config = require('../config');
 
 binanceapi.options({
     'APIKEY':process.env.BINANCE_KEY,
@@ -59,7 +60,7 @@ var binance = function (bot){
         },
         start: function () {
             var self = this;
-            var j = schedule.scheduleJob('*/10 * * * * *', function () {
+            var j = schedule.scheduleJob(Config.everyTenSeconds, function () {
                 self.checkNewAsset();
             })
         }
