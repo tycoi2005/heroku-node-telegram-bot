@@ -4,3 +4,5 @@ yarn.lock
 node_modules
 .idea/*
 npm-debug.log
+binancedb
+.idea/

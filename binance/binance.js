@@ -5,6 +5,11 @@
 const binanceapi = require('node-binance-api');
 var schedule = require('node-schedule');
 var Config = require('../config');
+var levelup = require('levelup');
+var leveldown = require('leveldown');
+
+var binancedb = levelup(leveldown('./binancedb'));
+const BALANCES = "balances";
 
 binanceapi.options({
     'APIKEY':process.env.BINANCE_KEY,
@@ -14,53 +19,43 @@ binanceapi.options({
 var binance = function (bot){
     return {
         bot: bot,
-        lastAsset : "",
-        assets : [],
-        mapAssets : {},
+            lastAsset : "",
+            assets : [],
+            mapAssets : {},       
         getLastAssetBinanceUrl: function(asset){
             return '<a href="https://www.this.com/userCenter/balances.html">New Binance Coin ' + asset + '</a>'
+        },
+        updateNewAsset: function(newbalances){
+            // console.log("updateNewAsset", newbalances)
+            var self = this;
+            let balance = newbalances[newbalances.length -1];
+            newbalances = JSON.stringify(newbalances);
+            binancedb.put(BALANCES,newbalances).then(balances=>{
+                bot.sendHTML(self.getLastAssetBinanceUrl(balance.asset)).then(function (res) {
+                    console.log("sended last asset", balance.asset)
+                });
+            }).catch(err=>{
+                console.log("error happened", err);
+            });
         },
         checkNewAsset: function(){
             var self = this;
             binanceapi.account(function(response) {
-                let balance = response.balances[response.balances.length -1];
-                if (self.lastAsset != balance.asset){
-                    self.lastAsset = balance.asset;
-                    bot.sendHTML(self.getLastAssetBinanceUrl(self.lastAsset)).then(function (res) {
-                        console.log("sended last asset", self.lastAsset)
-                    });
-                }
-                console.log("check new assests --------")
-                let newbalances = response.balances;
-                if (self.assets.length == 0){
-                    self.assets = newbalances;
-                    for (var i=0; i<response.balances.length; i++){
-                        let b = response.balances[i];
-                        self.mapAssets[b.asset] = b;
+                var newbalances = response.balances;
+                binancedb.get(BALANCES).then(oldbalances=>{
+                    oldbalances = JSON.parse(oldbalances);
+                    if (newbalances.length > oldbalances.length){
+                        self.updateNewAsset(newbalances);
                     }
-    //               for test
-    //                 self.mapAssets['WINGS'] = null;
-    //                 self.assets.pop()
-                } else if (self.assets.length < newbalances.length ){
-                    for (var i=0; i<response.balances.length; i++){
-                        let b = response.balances[i];
-                        if (!self.mapAssets[b.asset]){
-                            self.mapAssets[b.asset] = b;
+                }).catch(err=>{
+                    self.updateNewAsset(newbalances);
+                })
 
-                            bot.sendHTML( self.getLastAssetBinanceUrl(b.asset)).then(function (res) {
-                                console.log("sended new asset", b)
-                            });
-                        } else {
-                            console.log(self.mapAssets[b.asset])
-                        }
-                    }
-                    self.assets = newbalances;
-                }
             });
         },
         start: function () {
             var self = this;
-            var j = schedule.scheduleJob(Config.everyTenSeconds, function () {
+            var j = schedule.scheduleJob(Config.timers.everyTenSeconds, function () {
                 self.checkNewAsset();
             })
         }
