@@ -42,8 +42,10 @@ var binance = function (bot){
             var self = this;
             binanceapi.account(function(response) {
                 var newbalances = response.balances;
+                console.log("newbalances length ", newbalances.length, " last item", newbalances[newbalances.length-1].asset)
                 binancedb.get(BALANCES).then(oldbalances=>{
                     oldbalances = JSON.parse(oldbalances);
+                    console.log("oldbalances length ", oldbalances.length, " last item", oldbalances[oldbalances.length-1].asset)
                     if (newbalances.length > oldbalances.length){
                         self.updateNewAsset(newbalances);
                     }
