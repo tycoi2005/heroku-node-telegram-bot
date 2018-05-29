@@ -28,10 +28,13 @@
       <file leaf-file-name="binance.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/binance/binance.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="21" column="34" lean-forward="false" selection-start-line="21" selection-start-column="34" selection-end-line="21" selection-end-column="34" />
+            <state relative-caret-position="570">
+              <caret line="40" column="34" lean-forward="false" selection-start-line="40" selection-start-column="34" selection-end-line="40" selection-end-column="34" />
               <folding>
                 <element signature="e#0#39#0" expanded="false" />
+                <marker date="1527177514378" expanded="true" signature="2048:2126" ph="{...}" />
+                <marker date="1527177514378" expanded="true" signature="2048:2132" ph="{&quot;bot&quot;: bot...}" />
+                <marker date="1527177514378" expanded="true" signature="2048:2134" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -61,7 +64,7 @@
         <entry file="file://$PROJECT_DIR$/.env">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="75">
-              <caret line="5" column="18" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="5" selection-end-column="18" />
+              <caret line="5" column="18" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="5" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -71,7 +74,7 @@
         <entry file="file://$PROJECT_DIR$/package.json">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="360">
-              <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+              <caret line="26" column="0" lean-forward="false" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -651,16 +654,15 @@
       <workItem from="1514309189884" duration="5416000" />
       <workItem from="1523889307722" duration="5808000" />
       <workItem from="1525227028437" duration="173000" />
-      <workItem from="1525825346352" duration="734000" />
+      <workItem from="1525825346352" duration="952000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15212000" />
+    <option name="totallyTimeSpent" value="15430000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1440" height="824" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -710,6 +712,9 @@
           <caret line="21" column="34" lean-forward="false" selection-start-line="21" selection-start-column="34" selection-end-line="21" selection-end-column="34" />
           <folding>
             <element signature="e#0#39#0" expanded="false" />
+            <marker date="1527177514378" expanded="true" signature="2048:2126" ph="{...}" />
+            <marker date="1527177514378" expanded="true" signature="2048:2132" ph="{&quot;bot&quot;: bot...}" />
+            <marker date="1527177514378" expanded="true" signature="2048:2134" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -1045,7 +1050,7 @@
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
-          <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <caret line="26" column="0" lean-forward="false" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1092,10 +1097,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/binance/binance.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="21" column="34" lean-forward="false" selection-start-line="21" selection-start-column="34" selection-end-line="21" selection-end-column="34" />
+        <state relative-caret-position="570">
+          <caret line="40" column="34" lean-forward="false" selection-start-line="40" selection-start-column="34" selection-end-line="40" selection-end-column="34" />
           <folding>
             <element signature="e#0#39#0" expanded="false" />
+            <marker date="1527177514378" expanded="true" signature="2048:2126" ph="{...}" />
+            <marker date="1527177514378" expanded="true" signature="2048:2132" ph="{&quot;bot&quot;: bot...}" />
+            <marker date="1527177514378" expanded="true" signature="2048:2134" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -1111,7 +1119,7 @@
     <entry file="file://$PROJECT_DIR$/.env">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
-          <caret line="5" column="18" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="5" selection-end-column="18" />
+          <caret line="5" column="18" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="5" selection-end-column="18" />
           <folding />
         </state>
       </provider>

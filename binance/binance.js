@@ -42,13 +42,38 @@ var binance = function (bot){
             var self = this;
             binanceapi.account(function(response) {
                 var newbalances = response.balances;
-                console.log("newbalances length ", newbalances.length, " last item", newbalances[newbalances.length-1].asset)
+                // console.log("newbalances length ", newbalances.length, " last item", newbalances[newbalances.length-1].asset)
                 binancedb.get(BALANCES).then(oldbalances=>{
                     oldbalances = JSON.parse(oldbalances);
-                    console.log("oldbalances length ", oldbalances.length, " last item", oldbalances[oldbalances.length-1].asset)
+                    // console.log("oldbalances length ", oldbalances.length, " last item", oldbalances[oldbalances.length-1].asset)
+                    var updated = false;
                     if (newbalances.length > oldbalances.length){
+                        updated = true;
                         self.updateNewAsset(newbalances);
                     }
+
+                    var map = {};
+                    var isNewItem = false;
+
+                    for (var i =0; i < oldbalances.length; i++){
+                        let item = oldbalances[i];
+                        let asset = item.asset;
+                        map[asset] = true;
+                    }
+                    for (var i =0; i < newbalances.length; i++){
+                        let item = newbalances[i];
+                        let asset = item.asset;
+                        if (!map[asset]){
+                            isNewItem = true;
+                            bot.sendHTML(self.getLastAssetBinanceUrl(asset)).then(function (res) {
+                                console.log("sended new asset", asset)
+                            });
+                        }
+                    }
+                    if (isNewItem && !updated){
+                        self.updateNewAsset(newbalances);
+                    }
+                    
                 }).catch(err=>{
                     self.updateNewAsset(newbalances);
                 })
