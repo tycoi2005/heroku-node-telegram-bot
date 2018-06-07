@@ -20,6 +20,8 @@ binanceapi.options({
     'APISECRET':process.env.BINANCE_SECRET
 });
 
+const BALANCES1 = "balances1";
+
 var binance = function (bot){
     return {
         bot: bot,
@@ -28,6 +30,43 @@ var binance = function (bot){
             mapAssets : {},       
         getLastAssetBinanceUrl: function(asset){
             return '<a href="https://www.this.com/userCenter/balances.html">New Binance Coin ' + asset + '</a>'
+        },
+        updateNewBalance: function(newbalances){
+            // console.log("updateNewAsset", newbalances)
+            var self = this;
+            newbalances = JSON.stringify(newbalances);
+            binancedb.put(BALANCES1,newbalances).then(balances=>{
+                console.log("updated new balances")
+            }).catch(err=>{
+                console.log("error happened", err);
+            });
+        },
+        checkNewBalance: function(){
+            var self = this;
+            binanceapi.balance(function(newbalances) {
+                // console.log("newbalances length ", newbalances.length, " last item", newbalances[newbalances.length-1].asset)
+                binancedb.get(BALANCES1).then(oldbalances=>{
+                    oldbalances = JSON.parse(oldbalances);
+                    //console.log("oldbalances length ", oldbalances.length, " last item", oldbalances[oldbalances.length-1].asset)
+                    var isNewItem = false;
+
+                    for (let i in newbalances){
+                        if (!oldbalances[i]){
+                            isNewItem = true;
+                            bot.sendHTML(self.getLastAssetBinanceUrl(i)).then(function (res) {
+                                console.log("sended new balance", i)
+                            });
+                        }
+                    }
+                    if (isNewItem){
+                        self.updateNewBalance(newbalances);
+                    }
+                    
+                }).catch(err=>{
+                    self.updateNewBalance(newbalances);
+                })
+
+            });
         },
         updateNewAsset: function(newbalances){
             // console.log("updateNewAsset", newbalances)
@@ -120,6 +159,10 @@ var binance = function (bot){
         start: function () {
             var self = this;
             
+            var j = schedule.scheduleJob(Config.timers.everyTwentySeconds, function () {
+                self.checkNewBalance();
+            })
+
             var j = schedule.scheduleJob(Config.timers.everyTwentySeconds, function () {
                 self.checkNewAsset();
             })
