@@ -31,6 +31,9 @@ var binance = function (bot){
         getLastAssetBinanceUrl: function(asset){
             return '<a href="https://www.this.com/userCenter/balances.html">New Binance Coin ' + asset + '</a>'
         },
+        getLastBalanceBinanceUrl: function(asset){
+            return '<a href="https://www.this.com/userCenter/balances.html">New Binance Balance ' + asset + '</a>'
+        },
         updateNewBalance: function(newbalances){
             // console.log("updateNewAsset", newbalances)
             var self = this;
@@ -53,7 +56,7 @@ var binance = function (bot){
                     for (let i in newbalances){
                         if (!oldbalances[i]){
                             isNewItem = true;
-                            bot.sendHTML(self.getLastAssetBinanceUrl(i)).then(function (res) {
+                            bot.sendHTML(self.getLastBalanceBinanceUrl(i)).then(function (res) {
                                 console.log("sended new balance", i)
                             });
                         }
