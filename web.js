@@ -1,6 +1,9 @@
 var express = require('express');
 var packageInfo = require('./package.json');
 var bodyParser = require('body-parser');
+var log = require('npmlog')
+Object.defineProperty(log, 'heading', { get: () => { return new Date().toUTCString() } })
+log.headingStyle = { bg: '', fg: 'white' }
 
 var app = express();
 app.use(bodyParser.json());
