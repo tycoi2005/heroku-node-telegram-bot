@@ -162,15 +162,15 @@ var binance = function (bot){
         start: function () {
             var self = this;
             
-            var j = schedule.scheduleJob(Config.timers.everyTwentySeconds, function () {
+            var j = schedule.scheduleJob(Config.timers.everyThirtySeconds, function () {
                 self.checkNewBalance();
             })
 
-            var j = schedule.scheduleJob(Config.timers.everyTwentySeconds, function () {
+            var j = schedule.scheduleJob(Config.timers.everyThirtySeconds, function () {
                 self.checkNewAsset();
             })
             
-            var j1 = schedule.scheduleJob(Config.timers.everyTwentySeconds, function () {
+            var j1 = schedule.scheduleJob(Config.timers.everyThirtySeconds, function () {
                 self.checkLastListingNew();
             })
 
