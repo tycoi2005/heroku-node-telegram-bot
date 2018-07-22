@@ -25,9 +25,10 @@ const BALANCES1 = "balances1";
 var binance = function (bot){
     return {
         bot: bot,
-            lastAsset : "",
-            assets : [],
-            mapAssets : {},       
+        lastAsset : "",
+        assets : [],
+        mapAssets : {},
+        mapSended: {},
         getLastAssetBinanceUrl: function(asset){
             return '<a href="https://www.this.com/userCenter/balances.html">New Binance Coin ' + asset + '</a>'
         },
@@ -54,8 +55,9 @@ var binance = function (bot){
                     var isNewItem = false;
 
                     for (let i in newbalances){
-                        if (!oldbalances[i]){
+                        if (!oldbalances[i] && !self.mapSended[BALANCES1 + i]){
                             isNewItem = true;
+                            self.mapSended[BALANCES1 + i] = true;
                             bot.sendHTML(self.getLastBalanceBinanceUrl(i)).then(function (res) {
                                 console.log("sended new balance", i)
                             });
@@ -77,6 +79,7 @@ var binance = function (bot){
             let balance = newbalances[newbalances.length -1];
             newbalances = JSON.stringify(newbalances);
             binancedb.put(BALANCES,newbalances).then(balances=>{
+
                 bot.sendHTML(self.getLastAssetBinanceUrl(balance.asset)).then(function (res) {
                     console.log("sended last asset", balance.asset)
                 });
@@ -109,8 +112,9 @@ var binance = function (bot){
                     for (var i =0; i < newbalances.length; i++){
                         let item = newbalances[i];
                         let asset = item.asset;
-                        if (!map[asset]){
+                        if (!map[asset] && !self.mapSended[BALANCES + asset]){
                             isNewItem = true;
+                            self.mapSended[BALANCES + asset] = true;
                             bot.sendHTML(self.getLastAssetBinanceUrl(asset)).then(function (res) {
                                 console.log("sended new asset", asset)
                             });
@@ -133,13 +137,17 @@ var binance = function (bot){
             let second = articles.next().text();
             // last = last.toString();
             // second = second.toString();
-            binancedb.put(LAST_LISTING_NEWS, last).then(rs=>{
-                bot.sendHTML('<a href="https://support.binance.com/hc/en-us/sections/115000106672-New-Listings">' + last + '</a>').then(function (res) {
-                    console.log("sended last news", last)
+            if (!self.mapSended[last]){
+                self.mapSended[last] = true;
+                binancedb.put(LAST_LISTING_NEWS, last).then(rs=>{
+                        bot.sendHTML('<a href="https://support.binance.com/hc/en-us/sections/115000106672-New-Listings">' + last + '</a>').then(function (res) {
+                        console.log("sended last news", last)
+                    });
+                }).catch(err=>{
+                        console.log("error happened", err);
                 });
-            }).catch(err=>{
-                console.log("error happened", err);
-            });
+            }
+
         },
         checkLastListingNew : function(){
             var self = this;

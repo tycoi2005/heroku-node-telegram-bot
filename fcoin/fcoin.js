@@ -22,6 +22,7 @@ var fcoin = function (bot){
         lastAsset : "",
         assets : [],
         mapAssets : {},
+        mapSended: {},
 
         updateListingNews: function(articles){
             console.log("updateListingNews")
@@ -30,13 +31,17 @@ var fcoin = function (bot){
             let second = articles.next().text();
             // last = last.toString();
             // second = second.toString();
-            fcoindb.put(LAST_LISTING_NEWS, last).then(rs=>{
-                bot.sendHTML('<a href="https://support.fcoin.com/hc/en-us/categories/360000333493-Announcements">' + last + '</a>').then(function (res) {
-                console.log("sended last news", last)
+            if (!self.mapSended[last]){
+                self.mapSended[last] = true;
+
+                fcoindb.put(LAST_LISTING_NEWS, last).then(rs=>{
+                    bot.sendHTML('<a href="https://support.fcoin.com/hc/en-us/categories/360000333493-Announcements">' + last + '</a>').then(function (res) {
+                    console.log("sended last news", last)
+                    });
+                }).catch(err=>{
+                        console.log("error happened", err);
                 });
-            }).catch(err=>{
-                    console.log("error happened", err);
-            });
+            }
         },
         checkLastListingNew : function(){
             var self = this;
@@ -59,7 +64,7 @@ var fcoin = function (bot){
         start: function () {
             var self = this;
 
-            var j1 = schedule.scheduleJob(Config.timers.everyTwentySeconds, function () {
+            var j1 = schedule.scheduleJob(Config.timers.everyThirtySeconds, function () {
                 self.checkLastListingNew();
             })
 
