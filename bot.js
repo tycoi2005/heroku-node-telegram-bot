@@ -50,8 +50,8 @@ bot.sendHTML = function(htmlString){
 var binance = require('./binance/binance.js')(bot);
 binance.start();
 
-var fcoin = require('./fcoin/fcoin.js')(bot);
-fcoin.start();
+// var fcoin = require('./fcoin/fcoin.js')(bot);
+// fcoin.start();
 
 // var misc = require('./misc/misc.js')(bot);
 // misc.start();
