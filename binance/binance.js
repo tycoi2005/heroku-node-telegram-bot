@@ -12,12 +12,14 @@ var leveldown = require('leveldown');
 const encode = require('encoding-down')
 
 var binancedb = levelup(encode(leveldown('./binancedb')));
-const BALANCES = "balances";
-const BINANCE_LISTING_NEW_URL = "https://support.binance.com/hc/en-us/sections/115000106672-New-Listings";
-const LAST_LISTING_NEWS = "listing_news";
-
 const BINANCE_NEWS_URL = "https://www.binance.com/en/support/announcement/c-49?navId=49";
 const LAST_BINANCE_NEWS = "bn_news";
+
+const BINANCE_LISTED_NEWS_URL = "https://www.binance.com/en/support/announcement/c-48?navId=48";
+const LAST_BINANCE_LISTED_NEWS = "bn_listed_news";
+
+
+
 binanceapi.options({
     'APIKEY':process.env.BINANCE_KEY,
     'APISECRET':process.env.BINANCE_SECRET
@@ -32,18 +34,15 @@ var binance = function (bot){
         assets : [],
         mapAssets : {},
         mapSended: {},
-        updateLastNews: function(articles){
-            console.log("updateLastNews")
+        updateLastNews: function(key, url, articles){
+            console.log("updateLastNews", key, " :: ", url)
             var self = this;
             let last = articles.first().text();
-            let second = articles.next().text();
-            // last = last.toString();
-            // second = second.toString();
             if (!self.mapSended[last]){
                 self.mapSended[last] = true;
-                binancedb.put(LAST_BINANCE_NEWS, last).then(rs=>{
+                binancedb.put(key, last).then(rs=>{
                         console.log("updateLastNews:: last news" + last)
-                        bot.sendHTML('<a href="https://www.binance.com/en/support/announcement/c-49?navId=49">' + last + '</a>').then(function (res) {
+                        bot.sendHTML('<a href="' + url +'">' + last + '</a>').then(function (res) {
                         console.log("updateLastNews:: sended last news", last)
                     });
                 }).catch(err=>{
@@ -52,10 +51,10 @@ var binance = function (bot){
             }
 
         },
-        checkLastNew : function(){
-            console.log("checkLastNew")
+        checkLastNew : function(key, url){
+            console.log("checkLastNew:: ", key, " :: ", url)
             var self = this;
-            fetchUrl(BINANCE_NEWS_URL, function(error, meta, body){
+            fetchUrl(url, function(error, meta, body){
                 var doc = body.toString();
                 var $ = cheerio.load(doc);
                 var articles = $(".css-1ej4hfo");
@@ -63,19 +62,27 @@ var binance = function (bot){
 
                 binancedb.get(LAST_BINANCE_NEWS).then(lastNews=>{
                     if (lastNews != last){
-                        self.updateLastNews(articles);
+                        self.updateLastNews(key, articles);
                     }
                     
                 }).catch(err=>{
                     console.log("get error", err)
-                    self.updateLastNews(articles);
+                    self.updateLastNews(key, url,  articles);
                 })
             });
         },
         start: function () {
             var self = this;
-            var j1 = schedule.scheduleJob(Config.timers.everyThirtySeconds, function () {
-                self.checkLastNew();
+            var jLastestNews = schedule.scheduleJob(Config.timers.everyTwentySeconds, function () {
+                let url = BINANCE_NEWS_URL;
+                let key = LAST_BINANCE_NEWS;
+                self.checkLastNew(key, url);
+            })
+
+            var jListingNews = schedule.scheduleJob(Config.timers.everyTwentySeconds, function () {
+                let url = BINANCE_LISTED_NEWS_URL;
+                let key = LAST_BINANCE_LISTED_NEWS;
+                self.checkLastNew(key, url);
             })
 
         }
