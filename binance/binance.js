@@ -25,8 +25,6 @@ binanceapi.options({
     'APISECRET':process.env.BINANCE_SECRET
 });
 
-const BALANCES1 = "balances1";
-
 var binance = function (bot){
     return {
         bot: bot,
@@ -62,7 +60,7 @@ var binance = function (bot){
 
                 binancedb.get(LAST_BINANCE_NEWS).then(lastNews=>{
                     if (lastNews != last){
-                        self.updateLastNews(key, articles);
+                        self.updateLastNews(key, url, articles);
                     }
                     
                 }).catch(err=>{
