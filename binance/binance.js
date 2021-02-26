@@ -95,13 +95,13 @@ var binance = function (bot){
 
         start: function () {
             var self = this;
-            var jLastestNews = schedule.scheduleJob(Config.timers.everyTwentySeconds, function () {
+            var jLastestNews = schedule.scheduleJob(Config.timers.everyFiveSeconds, function () {
                 let url = BINANCE_NEWS_URL_API;
                 let key = LAST_BINANCE_NEWS;
                 self.checkLastNewAPI(key, url);
             })
 
-            var jListingNews = schedule.scheduleJob(Config.timers.everyTwentySeconds, function () {
+            var jListingNews = schedule.scheduleJob(Config.timers.everyFiveSeconds, function () {
                 let url = BINANCE_LISTED_NEWS_URL_API;
                 let key = LAST_BINANCE_LISTED_NEWS;
                 self.checkLastNewAPI(key, url);
