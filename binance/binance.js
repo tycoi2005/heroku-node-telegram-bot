@@ -13,11 +13,11 @@ const encode = require('encoding-down')
 
 var binancedb = levelup(encode(leveldown('./binancedb')));
 const BINANCE_NEWS_URL = "https://www.binance.com/en/support/announcement/c-49?navId=49";
-const BINANCE_NEWS_URL_API = "https://www.binance.com/gateway-api/v1/public/cms/article/catalog/list/query?catalogId=49&pageNo=1&pageSize=25";
+const BINANCE_NEWS_URL_API = "https://www.binance.com/gateway-api/v1/public/cms/article/catalog/list/query?catalogId=49&pageNo=1&pageSize=3";
 const LAST_BINANCE_NEWS = "bn_news";
 
 const BINANCE_LISTED_NEWS_URL = "https://www.binance.com/en/support/announcement/c-48?navId=48";
-const BINANCE_LISTED_NEWS_URL_API = "https://www.binance.com/gateway-api/v1/public/cms/article/catalog/list/query?catalogId=48&pageNo=1&pageSize=25";
+const BINANCE_LISTED_NEWS_URL_API = "https://www.binance.com/gateway-api/v1/public/cms/article/catalog/list/query?catalogId=48&pageNo=1&pageSize=3";
 const LAST_BINANCE_LISTED_NEWS = "bn_listed_news";
 
 
@@ -73,6 +73,7 @@ var binance = function (bot){
         },
         
         checkLastNewAPI : function(key, url){
+            url = url + "&rand=" + Math.random();
             console.log("checkLastNew:: ", key, " :: ", url)
             var self = this;
             let settings = { method: "Get" };
