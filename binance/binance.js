@@ -12,6 +12,7 @@ var leveldown = require('leveldown');
 const encode = require('encoding-down')
 
 var binancedb = levelup(encode(leveldown('./binancedb')));
+
 const BINANCE_NEWS_URL = "https://www.binance.com/en/support/announcement/c-49?navId=49";
 const BINANCE_NEWS_URL_API = "https://www.binance.com/gateway-api/v1/public/cms/article/catalog/list/query?catalogId=49&pageNo=1&pageSize=3";
 const LAST_BINANCE_NEWS = "bn_news";
@@ -34,14 +35,17 @@ var binance = function (bot){
         assets : [],
         mapAssets : {},
         mapSended: {},
-        updateLastNews: function(key, url, last){
-            console.log("updateLastNews", key, " :: ", url)
+        updateLastNews: function(key, lastitem){
+            console.log("updateLastNews", key, " :: ", lastitem.code, "::", lastitem.title)
             var self = this;
+            let url = "https://www.binance.com/en/support/announcement/"+ lastitem.code;
+            let last = lastitem.code;
+            
             if (!self.mapSended[last]){
                 self.mapSended[last] = true;
                 binancedb.put(key, last).then(rs=>{
                         console.log("updateLastNews:: last news" + last)
-                        bot.sendHTML('<a href="' + url +'">' + last + '</a>').then(function (res) {
+                        bot.sendHTML('<a href="' + url +'">' + lastitem.title + '</a>').then(function (res) {
                         console.log("updateLastNews:: sended last news", last)
                     });
                 }).catch(err=>{
@@ -51,28 +55,7 @@ var binance = function (bot){
 
         },
         
-        checkLastNew : function(key, url){
-            console.log("checkLastNew:: ", key, " :: ", url)
-            var self = this;
-            fetchUrl(url, function(error, meta, body){
-                var doc = body.toString();
-                var $ = cheerio.load(doc);
-                var articles = $(".css-1ej4hfo");
-                var last = articles.first().text();
-
-                binancedb.get(LAST_BINANCE_NEWS).then(lastNews=>{
-                    if (lastNews != last){
-                        self.updateLastNews(key, url, last);
-                    }
-                    
-                }).catch(err=>{
-                    console.log("get error", err)
-                    self.updateLastNews(key, url,  last);
-                })
-            });
-        },
-        
-        checkLastNewAPI : function(key, url){
+        checkLastNewAPI : function(key, url, open_link){
             url = url + "&rand=" + Math.random();
             console.log("checkLastNew:: ", key, " :: ", url)
             var self = this;
@@ -80,15 +63,15 @@ var binance = function (bot){
 
             fetchUrl(url, function(error, meta, body){
                 var doc = JSON.parse(body.toString());
-                last = doc.data.articles[0].title;
-                binancedb.get(LAST_BINANCE_NEWS).then(lastNews=>{
-                    if (lastNews != last){
-                        self.updateLastNews(key, url, last);
+                lastitem = doc.data.articles[0]
+                binancedb.get(key).then(lastNews=>{
+                    if (lastNews != lastitem.code){
+                        self.updateLastNews(key, lastitem);
                     }
                     
                 }).catch(err=>{
                     console.log("get error", err)
-                    self.updateLastNews(key, url,  last);
+                    self.updateLastNews(key, lastitem);
                 })
             });
         },
@@ -99,7 +82,7 @@ var binance = function (bot){
             var jLastestNews = schedule.scheduleJob(Config.timers.everyFiveSeconds, function () {
                 let url = BINANCE_NEWS_URL_API;
                 let key = LAST_BINANCE_NEWS;
-                self.checkLastNewAPI(key, url);
+                self.checkLastNewAPI(key, url) ;
             })
 
             var jListingNews = schedule.scheduleJob(Config.timers.everyFiveSeconds, function () {
