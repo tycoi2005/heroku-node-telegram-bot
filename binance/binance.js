@@ -1,7 +1,7 @@
 /**
  * Created by macos on 4/16/18.
  */
-
+const cmc = require("../misc/cmc")
 const binanceapi = require('node-binance-api');
 const cheerio = require('cheerio');
 var fetchUrl = require("fetch").fetchUrl;
@@ -59,7 +59,6 @@ var binance = function (bot){
             url = url + "&rand=" + Math.random();
             console.log("checkLastNew:: ", key, " :: ", url)
             var self = this;
-            let settings = { method: "Get" };
 
             fetchUrl(url, function(error, meta, body){
                 var doc = JSON.parse(body.toString());
@@ -67,6 +66,7 @@ var binance = function (bot){
                 binancedb.get(key).then(lastNews=>{
                     if (lastNews != lastitem.code){
                         self.updateLastNews(key, lastitem);
+                        self.checkCoinMentioned(lastitem.title);
                     }
                     
                 }).catch(err=>{
@@ -76,6 +76,28 @@ var binance = function (bot){
             });
         },
         
+        checkCoinMentioned : function(title) {
+            console.log("Binance::checkCoinMentioned")
+
+            let arr = title.match(/\(([^)]+)\)/)
+            if (!arr) return null;
+
+            coinCode = arr[1];
+            if (!coinCode) return null;
+
+            cmc.checkSymbol(coinCode).then(htmlString =>{
+                bot.sendHTML(htmlString).then(function (res) {
+                    console.log("Binance::checkCoinMentioned:: sended coin detail", coinCode)
+                });
+            }).catch(err =>{
+                console.log("Binance::checkCoinMentioned get error", err)
+            })
+        },
+
+        checkCoinMentionedInUniswap(coinCode){
+            console.log("Binance::checkCoinMentionedInUniswap", coinCode)
+            
+        },
 
         start: function () {
             var self = this;
