@@ -16,6 +16,7 @@
   "dependencies": {
     "body-parser": "^1.15.0",
     "cheerio": "^1.0.0-rc.2",
+    "coinmarketcap-api": "^3.1.1",
     "encoding-down": "^5.0.3",
     "express": "^4.13.4",
     "fetch": "^1.1.0",
