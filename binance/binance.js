@@ -45,6 +45,7 @@ var binance = function (bot){
                 self.mapSended[last] = true;
                 binancedb.put(key, last).then(rs=>{
                         console.log("updateLastNews:: last news" + last)
+                        self.checkCoinMentioned(lastitem.title);
                         bot.sendHTML('<a href="' + url +'">' + lastitem.title + '</a>').then(function (res) {
                         console.log("updateLastNews:: sended last news", last)
                     });
@@ -66,7 +67,6 @@ var binance = function (bot){
                 binancedb.get(key).then(lastNews=>{
                     if (lastNews != lastitem.code){
                         self.updateLastNews(key, lastitem);
-                        self.checkCoinMentioned(lastitem.title);
                     }
                     
                 }).catch(err=>{
