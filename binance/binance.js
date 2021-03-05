@@ -86,6 +86,8 @@ var binance = function (bot){
             if (!coinCode) return null;
 
             cmc.checkSymbol(coinCode).then(htmlString =>{
+                if (!htmlString) return;
+                
                 bot.sendHTML(htmlString).then(function (res) {
                     console.log("Binance::checkCoinMentioned:: sended coin detail", coinCode)
                 });
