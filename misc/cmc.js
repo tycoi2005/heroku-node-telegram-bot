@@ -4,7 +4,7 @@ const apiKey = 'b92a5a15-f843-448e-8fcf-1944d84a3841'
 const cmc = new CoinMarketCap(apiKey)
 
 cmc.checkSymbol = function (coinCode){
-    console.log("cmc::checkSymbol")
+    console.log("cmc::checkSymbol ", coinCode)
 
     return cmc.getIdMap({symbol: coinCode}).then(results =>{
         
@@ -31,7 +31,7 @@ cmc.checkSymbol = function (coinCode){
                 let pancakeswapurl = "https://exchange.pancakeswap.finance/#/add/0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56/" + token_address;
                 htmlString += "<a href=\"" + uniswapurl + "\" target=\"_blank\"> Swap " + item.name + " on Pancake </a>\n"
             }
-            
+
             htmlString += "\n"
         }
         return htmlString;
