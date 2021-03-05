@@ -12,7 +12,7 @@ cmc.checkSymbol = function (coinCode){
 
         if (!results || !results.data){
             console.log("symbol not found on cmc: ", coinCode)
-            return
+            return null;
         }
         let data = results.data;
         for (let i =0; i< data.length; i++){
