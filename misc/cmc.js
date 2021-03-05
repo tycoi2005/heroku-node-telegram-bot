@@ -26,6 +26,12 @@ cmc.checkSymbol = function (coinCode){
                 let uniswapurl = "https://app.uniswap.org/#/swap?outputCurrency=" + token_address;
                 htmlString += "<a href=\"" + uniswapurl + "\" target=\"_blank\"> Swap " + item.name + " on Uniswap </a>\n"
             }
+            if (platform && platform.name == "Binance Smart Chain"){
+                let token_address = platform.token_address;
+                let pancakeswapurl = "https://exchange.pancakeswap.finance/#/add/0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56/" + token_address;
+                htmlString += "<a href=\"" + uniswapurl + "\" target=\"_blank\"> Swap " + item.name + " on Pancake </a>\n"
+            }
+            
             htmlString += "\n"
         }
         return htmlString;
